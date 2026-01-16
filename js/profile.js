@@ -186,7 +186,8 @@ function playBackgroundMusic(url, startTime, endTime) {
 
     if (toggleBtn) {
         toggleBtn.style.display = 'flex';
-        toggleBtn.classList.add('muted');
+        toggleBtn.classList.add('playing');
+        toggleBtn.classList.remove('muted');
 
         toggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -212,9 +213,16 @@ function playBackgroundMusic(url, startTime, endTime) {
 
 async function trackView() {
     try {
+        const viewedKey = 'viewed_' + profile.id;
+        if (localStorage.getItem(viewedKey)) {
+            const views = await getViews(profile.id);
+            document.getElementById('viewCount').textContent = formatNumber(views);
+            return;
+        }
         const currentUser = await getCurrentUser();
         if (!currentUser || currentUser.uid !== profile.id) {
             await incrementViews(profile.id);
+            localStorage.setItem(viewedKey, 'true');
         }
         const views = await getViews(profile.id);
         document.getElementById('viewCount').textContent = formatNumber(views);
