@@ -2,8 +2,6 @@
 
 A sleek, minimalist profile page where you can share your digital identity with the world. Think of it as your personal corner of the internet — beautiful, functional, and entirely yours.
 
-![Profile Preview](https://via.placeholder.com/800x400?text=leave.me+Profile)
-
 ## What is this?
 
 leave.me lets you create a stunning one-page profile with:
@@ -17,13 +15,7 @@ leave.me lets you create a stunning one-page profile with:
 
 It's basically a link-in-bio page, but way cooler.
 
-## Live Demo
-
-Check out what it looks like: [your-username.github.io/leave.me](https://your-username.github.io/leave.me)
-
 ## Tech Stack
-
-Nothing fancy, just solid foundations:
 
 - **Frontend**: HTML, CSS, JavaScript (no frameworks needed)
 - **Backend**: Supabase (Auth, Database, Storage)
@@ -35,8 +27,8 @@ Nothing fancy, just solid foundations:
 ### 1. Clone this repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/leave.me.git
-cd leave.me
+git clone https://github.com/kAi-Xin-02/leave-me.git
+cd leave-me
 ```
 
 ### 2. Set up Supabase
@@ -49,7 +41,6 @@ cd leave.me
 ### 3. Configure your credentials
 
 ```bash
-# Copy the example config
 cp js/config.example.js js/config.local.js
 ```
 
@@ -57,7 +48,7 @@ Edit `js/config.local.js` with your actual credentials:
 
 ```javascript
 const CONFIG = {
-    SUPABASE_URL: 'https://your-project.supabase.co',
+    SUPABASE_URL: 'https://your-project-id.supabase.co',
     SUPABASE_ANON_KEY: 'your-anon-key-here'
 };
 window.APP_CONFIG = CONFIG;
@@ -68,7 +59,6 @@ window.APP_CONFIG = CONFIG;
 Run these SQL commands in your Supabase SQL Editor:
 
 ```sql
--- Profiles table
 CREATE TABLE profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id),
     username TEXT UNIQUE NOT NULL,
@@ -87,7 +77,6 @@ CREATE TABLE profiles (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- Messages table
 CREATE TABLE messages (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     to_user_id UUID REFERENCES profiles(id),
@@ -99,11 +88,9 @@ CREATE TABLE messages (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- Enable Row Level Security
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 
--- Policies
 CREATE POLICY "Public profiles" ON profiles FOR SELECT USING (true);
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
 CREATE POLICY "Anyone can send messages" ON messages FOR INSERT WITH CHECK (true);
@@ -118,8 +105,8 @@ To enable Google/GitHub login:
 
 1. Go to **Supabase Dashboard > Authentication > Providers**
 2. Enable **Google** and/or **GitHub**
-3. Add your OAuth credentials from [Google Cloud Console](https://console.cloud.google.com) or [GitHub Developer Settings](https://github.com/settings/developers)
-4. Set redirect URL to: `https://your-project.supabase.co/auth/v1/callback`
+3. Add your OAuth credentials
+4. Set redirect URL to your Supabase callback URL
 
 ### 6. Create storage bucket
 
@@ -133,32 +120,30 @@ To enable Google/GitHub login:
 npx serve
 ```
 
-Open [http://localhost:3000](http://localhost:3000)-
+Open [http://localhost:3000](http://localhost:3000)
 
 ## File Structure
 
 ```
-leave.me/
+leave-me/
 ├── index.html          # Landing/login page
 ├── dashboard.html      # User dashboard
 ├── u/
-│   └── index.html      # Profile page (leave.me/u/username)
+│   └── index.html      # Profile page (/u/username)
 ├── css/
 │   ├── main.css        # Global styles
 │   ├── landing.css     # Landing page styles
 │   ├── dashboard.css   # Dashboard styles
-│   ├── profile.css     # Profile page styles
-│   └── ...
+│   └── profile.css     # Profile page styles
 ├── js/
 │   ├── config.example.js   # Config template (commit this)
 │   ├── config.local.js     # Your credentials (DO NOT commit)
 │   ├── supabase-config.js  # Supabase client
 │   ├── landing.js          # Login/signup logic
 │   ├── dashboard.js        # Dashboard functionality
-│   ├── profile.js          # Profile page logic
-│   └── ...
+│   └── profile.js          # Profile page logic
 └── assets/
-    └── background.mp4  # Default background video
+    └── ...             # Your media files
 ```
 
 ## Deploying to GitHub Pages
@@ -166,7 +151,7 @@ leave.me/
 1. Push your code to GitHub
 2. Go to **Settings > Pages**
 3. Set source to **main branch**
-4. Your site will be live at `https://username.github.io/leave.me`
+4. Your site will be live!
 
 **Important**: Make sure `config.local.js` is in your `.gitignore` so your API keys stay private!
 
