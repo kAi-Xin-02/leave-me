@@ -43,7 +43,11 @@ function createSnowflakes() {
 
 async function loadProfile() {
     const path = window.location.pathname;
-    const username = path.split('/').filter(Boolean).pop() || getUrlParam('u');
+    const urlParams = new URLSearchParams(window.location.search);
+    const userFromQuery = urlParams.get('user');
+    const pathParts = path.split('/').filter(Boolean);
+    const lastPart = pathParts[pathParts.length - 1];
+    const username = userFromQuery || (lastPart !== 'u' && lastPart !== 'index.html' ? lastPart : null) || getUrlParam('u');
 
     if (!username) {
         document.querySelector('.profile-card').innerHTML = '<p>Profile not found</p>';

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+        // Handle GitHub Pages SPA routing for profile pages
+        const path = window.location.pathname;
+        const match = path.match(/\/leave-me\/u\/([^\/]+)/);
+        if (match && match[1]) {
+            // Redirect /u/username to /u/?user=username
+            window.location.replace('/leave-me/u/?user=' + match[1] + window.location.hash);
+        } else {
+            // Not a profile URL, show 404
+            document.body.innerHTML = '<h1>Page Not Found</h1><p><a href="/leave-me/">Go Home</a></p>';
+        }
+    </script>
+</head>
+
+<body>
+    <p>Redirecting...</p>
+</body>
+
+</html>
