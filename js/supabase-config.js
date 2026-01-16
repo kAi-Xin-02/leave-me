@@ -64,13 +64,15 @@ async function signInWithEmail(email, password) {
 }
 
 async function signInWithGoogle() {
-    const { data, error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + '/dashboard.html' } });
+    const basePath = window.location.pathname.includes('/leave-me') ? '/leave-me' : '';
+    const { data, error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + basePath + '/dashboard.html' } });
     if (error) throw error;
     return data;
 }
 
 async function signInWithGithub() {
-    const { data, error } = await sb.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: window.location.origin + '/dashboard.html' } });
+    const basePath = window.location.pathname.includes('/leave-me') ? '/leave-me' : '';
+    const { data, error } = await sb.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: window.location.origin + basePath + '/dashboard.html' } });
     if (error) throw error;
     return data;
 }
