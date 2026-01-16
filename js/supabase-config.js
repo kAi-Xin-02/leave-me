@@ -64,15 +64,21 @@ async function signInWithEmail(email, password) {
 }
 
 async function signInWithGoogle() {
-    const basePath = window.location.pathname.includes('/leave-me') ? '/leave-me' : '';
-    const { data, error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + basePath + '/dashboard.html' } });
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    const redirectUrl = isGitHubPages
+        ? 'https://kai-xin-02.github.io/leave-me/dashboard.html'
+        : window.location.origin + '/dashboard.html';
+    const { data, error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: redirectUrl } });
     if (error) throw error;
     return data;
 }
 
 async function signInWithGithub() {
-    const basePath = window.location.pathname.includes('/leave-me') ? '/leave-me' : '';
-    const { data, error } = await sb.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: window.location.origin + basePath + '/dashboard.html' } });
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    const redirectUrl = isGitHubPages
+        ? 'https://kai-xin-02.github.io/leave-me/dashboard.html'
+        : window.location.origin + '/dashboard.html';
+    const { data, error } = await sb.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: redirectUrl } });
     if (error) throw error;
     return data;
 }
