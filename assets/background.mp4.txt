@@ -1,0 +1,49 @@
+# Placeholder for background.mp4
+
+This file is a placeholder. You need to add your own background video here.
+
+## Recommended Specifications:
+
+- **Resolution**: 1920x1080 (Full HD)
+- **File Size**: Under 5MB for fast loading
+- **Format**: MP4 (H.264 codec)
+- **Duration**: 10-30 seconds (will loop)
+- **Style**: Dark, aesthetic, cyber/tech themed
+- **Audio**: None needed (will be muted)
+
+## Where to Find Free Videos:
+
+1. **Pexels Videos**: https://www.pexels.com/videos/
+   - Search: "abstract dark", "technology", "cyber", "particles"
+
+2. **Pixabay Videos**: https://pixabay.com/videos/
+   - Search: "abstract background", "digital", "matrix"
+
+3. **Coverr**: https://coverr.co/
+   - Browse abstract/technology categories
+
+## How to Optimize:
+
+If your video is too large, use [HandBrake](https://handbrake.fr/):
+
+1. Download and install HandBrake (free)
+2. Open your video
+3. Preset: "Web" → "Gmail Medium 5 Minutes 720p30"
+4. Dimensions: Set to 1920x1080
+5. Click "Start Encode"
+
+## Alternative:
+
+If you prefer a static background instead of video:
+
+1. Delete the video element in `index.html` (lines 15-19)
+2. In `css/style.css`, change `.video-overlay` background to:
+   ```css
+   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+   ```
+   Or use an image:
+   ```css
+   background: url('../assets/background.jpg') center/cover no-repeat;
+   ```
+
+Replace this file with your actual `background.mp4` video file.

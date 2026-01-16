@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+config.local.js
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local testing
+*.local
+
+# Firebase (if using)
+.firebase/
+firebase-debug.log
+.firebaserc
+
+# Supabase local
+.supabase/
+
+# Gemini/Agent artifacts
+.gemini/
+
+# Documentation drafts
+*.md.bak
+PROJECT_SUMMARY.md
+QUICKSTART.md
+FIREBASE_SETUP.md
+SUPABASE_SETUP.md
+GOOGLE_OAUTH_SETUP.md

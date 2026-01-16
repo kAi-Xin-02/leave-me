@@ -1,0 +1,189 @@
+/* Orbital Avatar Animation */
+.profile-container {
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.profile-container::after {
+    content: none;
+    display: none;
+}
+
+.profile-container.fast-orbit::after {
+    display: none;
+}
+
+@keyframes orbit {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fast-orbit {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Profile name with glow */
+.profile-card .name {
+    font-family: 'Orbitron', 'Inter', sans-serif;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* Glitch overlay */
+.glitch-overlay {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    opacity: 0;
+    z-index: 20;
+    mix-blend-mode: color-dodge;
+    transition: opacity 0.3s;
+}
+
+/* Social icons enhanced animations */
+.social-link {
+    position: relative;
+    overflow: hidden;
+}
+
+.social-link::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(0deg,
+            transparent,
+            var(--accent-color, #a855f7),
+            rgba(236, 72, 153, 0.8));
+    transform-origin: bottom right;
+    animation: shine 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.social-link:hover::before {
+    opacity: 0.3;
+}
+
+@keyframes shine {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.social-link:hover {
+    transform: scale(1.4) rotateY(15deg) translateY(-4px);
+}
+
+/* LED glow border animation */
+.led-border {
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.led-border::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: inherit;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            var(--accent-color, #a855f7) 20%,
+            rgba(236, 72, 153, 0.8) 40%,
+            transparent 60%);
+    background-size: 400%;
+    animation: led-glow 4s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes led-glow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 400% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Animated conic gradient border */
+.animated-border {
+    position: relative;
+}
+
+.animated-border::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px solid transparent;
+    border-radius: inherit;
+    background: conic-gradient(from 0deg,
+            var(--accent-color, #a855f7),
+            rgba(236, 72, 153, 0.8),
+            var(--accent-color, #a855f7));
+    animation: border-spin 2s linear infinite;
+    z-index: -1;
+}
+
+@keyframes border-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Profile card slide-in animation */
+.profile-card.slide-in {
+    animation: slideInFade 1s ease-out forwards;
+}
+
+@keyframes slideInFade {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

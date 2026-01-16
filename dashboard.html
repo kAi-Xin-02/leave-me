@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/crop.css">
+    <link rel="stylesheet" href="css/music-slider.css">
+</head>
+
+<body>
+    <nav class="topbar">
+        <a href="dashboard.html" class="logo">leave.me</a>
+        <div class="nav-right">
+            <a href="#" id="viewProfile" class="nav-link">View Profile</a>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+        </div>
+    </nav>
+
+    <main class="dashboard">
+        <aside class="sidebar">
+            <button class="nav-item active" data-section="profile">Profile</button>
+            <button class="nav-item" data-section="links">Links</button>
+            <button class="nav-item" data-section="messages">Messages <span class="badge" id="msgBadge"></span></button>
+            <button class="nav-item" data-section="theme">Theme</button>
+        </aside>
+
+        <div class="content">
+            <section id="profileSection" class="section">
+                <h2>Edit Profile</h2>
+                <form id="profileForm">
+                    <div class="form-row">
+                        <label>Display Name</label>
+                        <input type="text" id="displayName" maxlength="30">
+                    </div>
+                    <div class="form-row">
+                        <label>Bio</label>
+                        <textarea id="bio" maxlength="150" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <label>Avatar</label>
+                        <div class="file-upload">
+                            <img id="avatarPreview" src="" alt="">
+                            <input type="file" id="avatarFile" accept="image/*">
+                            <span>Click to upload</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Background (image or video)</label>
+                        <div class="file-upload">
+                            <input type="file" id="bgFile" accept="image/*,video/mp4,video/webm">
+                            <span id="bgFileName">Click to upload</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Background Music (optional)</label>
+                        <div class="file-upload">
+                            <input type="file" id="musicFile" accept="audio/*">
+                            <span id="musicFileName">Click to upload audio</span>
+                        </div>
+                    </div>
+
+                    <!-- Music Trimmer with Dual Sliders -->
+                    <div id="musicTrimmer"
+                        style="display:none; margin-top:1rem; padding:1.5rem; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+                        <div style="margin-bottom:1rem;">
+                            <div style="font-size:0.95rem; font-weight:600; margin-bottom:0.5rem; color:#fff;">Trim
+                                Music</div>
+                            <div style="font-size:0.85rem; color:#888;">Drag the sliders to select which part to use
+                            </div>
+                        </div>
+
+                        <audio id="musicPreviewAudio" controls style="width:100%; margin-bottom:1rem;"></audio>
+
+                        <div style="margin-bottom:1.5rem;">
+                            <div
+                                style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.85rem; color:#aaa;">
+                                <span>Start: <strong id="startTimeDisplay" style="color:#fff;">0:00</strong></span>
+                                <span>End: <strong id="endTimeDisplay" style="color:#fff;">0:00</strong></span>
+                            </div>
+                            <div style="position:relative; height:40px;">
+                                <div id="sliderTrack"
+                                    style="position:absolute; top:18px; height:4px; left:0; right:0; background:rgba(255,255,255,0.1); border-radius:2px;">
+                                    <div id="sliderRange"
+                                        style="position:absolute; height:100%; background:linear-gradient(90deg, #ffffff, #888888); border-radius:2px;">
+                                    </div>
+                                </div>
+                                <input type="range" id="startSlider" min="0" max="100" value="0"
+                                    style="position:absolute; width:100%;">
+                                <input type="range" id="endSlider" min="0" max="100" value="100"
+                                    style="position:absolute; width:100%;">
+                            </div>
+                        </div>
+
+                        <button type="button" id="clearMusic"
+                            style="padding:0.5rem 1rem; background:rgba(255,0,0,0.2); border:1px solid rgba(255,0,0,0.3); border-radius:6px; color:#ff6b6b; cursor:pointer; font-weight:500;">
+                            Remove Music
+                        </button>
+                    </div>
+
+                    <button type="submit" class="save-btn">Save Changes</button>
+                </form>
+            </section>
+
+            <section id="linksSection" class="section hidden">
+                <h2>Social Links</h2>
+                <div id="linksList"></div>
+                <div class="add-link">
+                    <select id="platformSelect">
+                        <option value="github">GitHub</option>
+                        <option value="discord">Discord</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="twitter">Twitter/X</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="spotify">Spotify</option>
+                        <option value="twitch">Twitch</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="snapchat">Snapchat</option>
+                        <option value="telegram">Telegram</option>
+                        <option value="steam">Steam</option>
+                        <option value="reddit">Reddit</option>
+                        <option value="website">Website</option>
+                    </select>
+                    <input type="url" id="linkUrl" placeholder="https://...">
+                    <button id="addLinkBtn">Add</button>
+                </div>
+            </section>
+
+            <section id="messagesSection" class="section hidden">
+                <h2>Your Messages</h2>
+                <div id="messagesList"></div>
+            </section>
+
+            <section id="themeSection" class="section hidden">
+                <h2>Theme Settings</h2>
+                <div class="form-row">
+                    <label>Accent Color</label>
+                    <input type="color" id="accentColor" value="#a855f7">
+                </div>
+                <div class="form-row">
+                    <label>Background Blur: <span id="blurValue">50</span>px</label>
+                    <input type="range" id="blurSlider" min="0" max="100" value="50">
+                </div>
+                <div class="form-row">
+                    <label>Card Opacity: <span id="opacityValue">0.7</span></label>
+                    <input type="range" id="opacitySlider" min="0" max="100" value="70">
+                </div>
+                <button id="saveTheme" class="save-btn">Save Theme</button>
+            </section>
+        </div>
+
+        <div class="preview-panel">
+            <h3>Live Preview</h3>
+            <div class="preview-frame" id="previewFrame">
+                <div class="preview-bg" id="previewBg"></div>
+                <div class="preview-overlay" id="previewOverlay"></div>
+                <div class="preview-content">
+                    <img id="previewAvatar" src="" alt="">
+                    <div id="previewName"></div>
+                    <div id="previewBio"></div>
+                </div>
+            </div>
+            <div class="profile-link">
+                <input type="text" id="profileUrl" readonly>
+                <button id="copyLink">Copy</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>made with ❤️ by <a href="#">kAi Xin</a></p>
+        </footer>
+    </main>
+
+    <div id="cropModal" class="crop-modal">
+        <div class="crop-modal-content">
+            <h3>Crop Image</h3>
+            <div class="crop-container">
+                <img id="cropImage" src="" alt="">
+            </div>
+            <div class="crop-actions">
+                <button id="cancelCrop" class="btn-secondary">Cancel</button>
+                <button id="applyCrop" class="btn-primary">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/config.local.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/music-trimmer.js"></script>
+</body>
+
+</html>

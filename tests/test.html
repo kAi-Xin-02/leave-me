@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Suite - Validation & Security</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .test-section {
+            background: white;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-case {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-left: 4px solid #ddd;
+        }
+
+        .test-case.pass {
+            border-color: #00ff88;
+            background: #f0fff8;
+        }
+
+        .test-case.fail {
+            border-color: #ff4757;
+            background: #fff0f0;
+        }
+
+        button {
+            background: #00d9ff;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+
+        button:hover {
+            background: #00b8d9;
+        }
+
+        .result {
+            margin-top: 0.5rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        input,
+        textarea {
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Validation & Security Test Suite</h1>
+
+    <div class="test-section">
+        <h2>1. Name Validation Tests</h2>
+        <button onclick="runNameTests()">Run All Name Tests</button>
+        <div id="nameTestResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Message Validation Tests</h2>
+        <button onclick="runMessageTests()">Run All Message Tests</button>
+        <div id="messageTestResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. XSS Protection Tests</h2>
+        <button onclick="runXSSTests()">Run All XSS Tests</button>
+        <div id="xssTestResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Rate Limiting Test</h2>
+        <button onclick="testRateLimit()">Test Rate Limit</button>
+        <button onclick="clearRateLimit()">Clear Rate Limit</button>
+        <div id="rateLimitResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Interactive Sanitization Test</h2>
+        <p>Enter potentially dangerous HTML/JS:</p>
+        <textarea id="xssInput" rows="3" placeholder="Try: <script>alert('XSS')<\/script>"></textarea>
+        <br>
+        <button onclick="testSanitization()">Sanitize & Display</button>
+        <div id="sanitizedResult"></div>
+    </div>
+
+    <script src="../js/validation.js"></script>
+    <script>
+        function runNameTests() {
+            const tests = [
+                { input: 'John Doe', expectedValid: true, desc: 'Valid name' },
+                { input: '', expectedValid: false, desc: 'Empty name' },
+                { input: '   ', expectedValid: false, desc: 'Whitespace only' },
+                { input: 'a'.repeat(51), expectedValid: false, desc: 'Name too long (51 chars)' },
+                { input: 'user_123', expectedValid: true, desc: 'Name with underscore' },
+                { input: 'user-name', expectedValid: true, desc: 'Name with hyphen' },
+                { input: "O'Brien", expectedValid: true, desc: 'Name with apostrophe' },
+                { input: '<script>alert(1)<\/script>', expectedValid: false, desc: 'XSS attempt in name' },
+            ];
+
+            const resultsDiv = document.getElementById('nameTestResults');
+            resultsDiv.innerHTML = '';
+
+            tests.forEach(test => {
+                const result = ValidationUtils.validateName(test.input);
+                const passed = result.valid === test.expectedValid;
+
+                const div = document.createElement('div');
+                div.className = `test-case ${passed ? 'pass' : 'fail'}`;
+                div.innerHTML = `
+                    <strong>${passed ? '✓ PASS' : '✗ FAIL'}</strong>: ${test.desc}<br>
+                    <div class="result">Input: "${test.input}"<br>
+                    Expected: ${test.expectedValid ? 'Valid' : 'Invalid'}<br>
+                    Got: ${result.valid ? 'Valid' : 'Invalid'}${result.error ? ' (' + result.error + ')' : ''}</div>
+                `;
+                resultsDiv.appendChild(div);
+            });
+        }
+
+        function runMessageTests() {
+            const tests = [
+                { input: 'Hello world!', expectedValid: true, desc: 'Valid message' },
+                { input: '', expectedValid: false, desc: 'Empty message' },
+                { input: 'Hi', expectedValid: false, desc: 'Message too short (< 5 chars)' },
+                { input: 'a'.repeat(501), expectedValid: false, desc: 'Message too long (501 chars)' },
+                { input: 'This is a great site! Keep it up.', expectedValid: true, desc: 'Valid longer message' },
+            ];
+
+            const resultsDiv = document.getElementById('messageTestResults');
+            resultsDiv.innerHTML = '';
+
+            tests.forEach(test => {
+                const result = ValidationUtils.validateMessage(test.input);
+                const passed = result.valid === test.expectedValid;
+
+                const div = document.createElement('div');
+                div.className = `test-case ${passed ? 'pass' : 'fail'}`;
+                div.innerHTML = `
+                    <strong>${passed ? '✓ PASS' : '✗ FAIL'}</strong>: ${test.desc}<br>
+                    <div class="result">Input length: ${test.input.length} chars<br>
+                    Expected: ${test.expectedValid ? 'Valid' : 'Invalid'}<br>
+                    Got: ${result.valid ? 'Valid' : 'Invalid'}${result.error ? ' (' + result.error + ')' : ''}</div>
+                `;
+                resultsDiv.appendChild(div);
+            });
+        }
+
+        function runXSSTests() {
+            const tests = [
+                { input: '<script>alert("XSS")<\/script>', desc: 'Script tag' },
+                { input: '<img src=x onerror=alert(1)>', desc: 'Image tag with onerror' },
+                { input: 'javascript:alert(1)', desc: 'JavaScript protocol' },
+                { input: '<iframe src="evil.com"></iframe>', desc: 'Iframe injection' },
+                { input: '"><script>alert(1)<\/script>', desc: 'Attribute escape attempt' },
+                { input: 'Hello & goodbye', desc: 'Ampersand' },
+                { input: 'Price: 5 < 10', desc: 'Less than sign' },
+                { input: "Title: 'My Story'", desc: 'Single quotes' },
+            ];
+
+            const resultsDiv = document.getElementById('xssTestResults');
+            resultsDiv.innerHTML = '';
+
+            tests.forEach(test => {
+                const sanitized = ValidationUtils.sanitizeHTML(test.input);
+                const isSafe = !sanitized.includes('<script') && !sanitized.includes('onerror') && !sanitized.includes('javascript:');
+
+                const div = document.createElement('div');
+                div.className = `test-case ${isSafe ? 'pass' : 'fail'}`;
+                div.innerHTML = `
+                    <strong>${isSafe ? '✓ SAFE' : '✗ UNSAFE'}</strong>: ${test.desc}<br>
+                    <div class="result">Input: ${test.input}<br>
+                    Sanitized: ${sanitized}</div>
+                `;
+                resultsDiv.appendChild(div);
+            });
+        }
+
+        function testRateLimit() {
+            const resultsDiv = document.getElementById('rateLimitResults');
+            const check1 = ValidationUtils.checkRateLimit();
+
+            let html = `<div class="test-case ${check1.allowed ? 'pass' : 'fail'}">`;
+            html += `<strong>First Check:</strong> ${check1.allowed ? 'Allowed ✓' : 'Blocked ✗'}<br>`;
+            if (!check1.allowed) {
+                html += `<div class="result">${check1.error}</div>`;
+            }
+            html += '</div>';
+
+            if (check1.allowed) {
+                ValidationUtils.setRateLimit();
+                const check2 = ValidationUtils.checkRateLimit();
+
+                html += `<div class="test-case ${!check2.allowed ? 'pass' : 'fail'}">`;
+                html += `<strong>After Setting Limit:</strong> ${check2.allowed ? 'Allowed (FAIL)' : 'Blocked ✓'}<br>`;
+                if (!check2.allowed) {
+                    html += `<div class="result">${check2.error}</div>`;
+                }
+                html += '</div>';
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function clearRateLimit() {
+            localStorage.removeItem('lastMessageTime');
+            document.getElementById('rateLimitResults').innerHTML =
+                '<div class="test-case pass"><strong>Rate limit cleared ✓</strong></div>';
+        }
+
+        function testSanitization() {
+            const input = document.getElementById('xssInput').value;
+            const sanitized = ValidationUtils.sanitizeHTML(input);
+
+            const resultDiv = document.getElementById('sanitizedResult');
+            resultDiv.innerHTML = `
+                <div class="test-case pass">
+                    <strong>Original Input:</strong><br>
+                    <div class="result">${input}</div>
+                    <br>
+                    <strong>Sanitized Output:</strong><br>
+                    <div class="result">${sanitized}</div>
+                    <br>
+                    <strong>Rendered:</strong><br>
+                    <div class="result" style="background: #f9f9f9; padding: 1rem; border: 1px solid #ddd;">${sanitized}</div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

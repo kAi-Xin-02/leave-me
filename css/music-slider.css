@@ -1,0 +1,42 @@
+/* Dual Range Slider Styling */
+#startSlider::-webkit-slider-thumb,
+#endSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    pointer-events: all;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    cursor: grab;
+}
+
+#startSlider::-webkit-slider-thumb:active,
+#endSlider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+}
+
+#startSlider::-moz-range-thumb,
+#endSlider::-moz-range-thumb {
+    pointer-events: all;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    cursor: grab;
+    border: none;
+}
+
+#startSlider,
+#endSlider {
+    pointer-events: none;
+}
+
+#startSlider::-webkit-slider-thumb {
+    pointer-events: all;
+}
+
+#endSlider::-webkit-slider-thumb {
+    pointer-events: all;
+}
