@@ -1,6 +1,6 @@
 # leave.me
 
-A sleek, minimalist profile page where you can share your digital identity with the world. Think of it as your personal corner of the internet — beautiful, functional, and entirely yours.
+A sleek, minimalist profile page where you can share your social identity with the world. Think of it as your personal corner of the internet — beautiful, functional, and entirely yours.
 
 ## What is this?
 
