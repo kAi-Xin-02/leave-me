@@ -167,11 +167,13 @@ function playBackgroundMusic(url, startTime, endTime) {
         }
     };
 
+    audio.addEventListener('play', () => updateUI(true));
+    audio.addEventListener('pause', () => updateUI(false));
+
     const tryPlay = () => {
         if (hasPlayed) return;
         audio.play().then(() => {
             hasPlayed = true;
-            updateUI(true);
             removeListeners();
         }).catch(() => { });
     };
@@ -186,18 +188,15 @@ function playBackgroundMusic(url, startTime, endTime) {
 
     if (toggleBtn) {
         toggleBtn.style.display = 'flex';
-        toggleBtn.classList.add('playing');
-        toggleBtn.classList.remove('muted');
+        updateUI(!audio.paused);
 
         toggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (audio.paused) {
                 audio.play();
-                updateUI(true);
                 hasPlayed = true;
             } else {
                 audio.pause();
-                updateUI(false);
             }
         });
     }
