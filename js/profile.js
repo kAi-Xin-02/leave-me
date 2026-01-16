@@ -152,42 +152,62 @@ function playBackgroundMusic(url, startTime, endTime) {
     document.body.appendChild(audio);
 
     const toggleBtn = document.getElementById('musicToggle');
+    let hasPlayed = false;
 
-    if (toggleBtn) {
-        toggleBtn.style.display = 'flex';
-        toggleBtn.classList.add('playing');
-        toggleBtn.classList.remove('muted');
-
-        toggleBtn.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
+    const updateUI = (playing) => {
+        if (toggleBtn) {
+            toggleBtn.style.display = 'flex';
+            if (playing) {
                 toggleBtn.classList.add('playing');
                 toggleBtn.classList.remove('muted');
             } else {
-                audio.pause();
                 toggleBtn.classList.remove('playing');
                 toggleBtn.classList.add('muted');
+            }
+        }
+    };
+
+    const tryPlay = () => {
+        if (hasPlayed) return;
+        audio.play().then(() => {
+            hasPlayed = true;
+            updateUI(true);
+            removeListeners();
+        }).catch(() => { });
+    };
+
+    const removeListeners = () => {
+        document.removeEventListener('click', tryPlay);
+        document.removeEventListener('touchstart', tryPlay);
+        document.removeEventListener('mousemove', tryPlay);
+        document.removeEventListener('scroll', tryPlay);
+        document.removeEventListener('keydown', tryPlay);
+    };
+
+    if (toggleBtn) {
+        toggleBtn.style.display = 'flex';
+        toggleBtn.classList.add('muted');
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (audio.paused) {
+                audio.play();
+                updateUI(true);
+                hasPlayed = true;
+            } else {
+                audio.pause();
+                updateUI(false);
             }
         });
     }
 
-    const playOnClick = () => {
-        audio.play().then(() => {
-            if (toggleBtn) {
-                toggleBtn.classList.add('playing');
-                toggleBtn.classList.remove('muted');
-            }
-        }).catch(e => console.log('Audio play:', e));
-        document.removeEventListener('click', playOnClick);
-    };
-    document.addEventListener('click', playOnClick);
+    document.addEventListener('click', tryPlay);
+    document.addEventListener('touchstart', tryPlay);
+    document.addEventListener('mousemove', tryPlay, { once: true });
+    document.addEventListener('scroll', tryPlay, { once: true });
+    document.addEventListener('keydown', tryPlay, { once: true });
 
-    audio.play().then(() => {
-        if (toggleBtn) {
-            toggleBtn.classList.add('playing');
-            toggleBtn.classList.remove('muted');
-        }
-    }).catch(() => { });
+    tryPlay();
 }
 
 async function trackView() {
