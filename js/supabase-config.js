@@ -51,7 +51,20 @@ function formatUpdates(updates) {
 async function signUpWithEmail(email, password, username) {
     const { data: existingUser } = await sb.from('profiles').select('username').eq('username', username.toLowerCase()).single();
     if (existingUser) throw new Error('Username already taken');
-    const { data, error } = await sb.auth.signUp({ email, password, options: { data: { username: username.toLowerCase(), display_name: username } } });
+
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    const redirectUrl = isGitHubPages
+        ? 'https://kai-xin-02.github.io/leave-me/confirm.html'
+        : window.location.origin + '/confirm.html';
+
+    const { data, error } = await sb.auth.signUp({
+        email,
+        password,
+        options: {
+            data: { username: username.toLowerCase(), display_name: username },
+            emailRedirectTo: redirectUrl
+        }
+    });
     if (error) throw error;
     await sb.from('profiles').insert({ id: data.user.id, username: username.toLowerCase(), display_name: username, email: email, bio: '', avatar_url: '', background_url: '', theme: { blur: 80, opacity: 0.7, accent: '#ffffff' }, social_links: [], views: 0 });
     return formatUser(data.user);
