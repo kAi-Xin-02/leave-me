@@ -1,10 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
+    handleAuthCallback();
     createParticles();
     setupTabs();
     setupForms();
     setupSocialAuth();
     checkAuthState();
+    setupCrossTabSync();
 });
+
+async function handleAuthCallback() {
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+        const statusEl = document.getElementById('statusMessage');
+        if (statusEl) {
+            statusEl.innerHTML = '<div style="color: #86efac;">✅ Email confirmed! Logging you in...</div>';
+            statusEl.style.display = 'block';
+        }
+        const params = new URLSearchParams(hash.substring(1));
+        const accessToken = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+        if (accessToken && refreshToken) {
+            try {
+                const { data, error } = await sb.auth.setSession({
+                    access_token: accessToken,
+                    refresh_token: refreshToken
+                });
+                if (!error && data.session) {
+                    localStorage.setItem('auth_confirmed', Date.now().toString());
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+            } catch (e) {
+                console.log('Auth callback error:', e);
+            }
+        }
+    }
+}
+
+function setupCrossTabSync() {
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'auth_confirmed') {
+            window.location.reload();
+        }
+    });
+}
 
 function togglePassword(inputId, btn) {
     const input = document.getElementById(inputId);
