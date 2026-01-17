@@ -73,8 +73,16 @@ async function loadProfile() {
     renderLinks();
 
     const baseUrl = window.location.origin + window.location.pathname.replace('dashboard.html', '');
-    document.getElementById('profileUrl').value = baseUrl + 'u/' + userProfile.username;
+    const profileLink = baseUrl + 'u/' + userProfile.username;
+
+    document.getElementById('profileUrl').value = profileLink;
     document.getElementById('viewProfile').href = 'u/' + userProfile.username;
+
+    // Update mobile profile link
+    const mobileProfileUrl = document.getElementById('mobileProfileUrl');
+    const mobileViewProfile = document.getElementById('mobileViewProfile');
+    if (mobileProfileUrl) mobileProfileUrl.value = profileLink;
+    if (mobileViewProfile) mobileViewProfile.href = 'u/' + userProfile.username;
 }
 
 function updatePreview() {
@@ -128,6 +136,25 @@ function setupNavigation() {
         setTimeout(() => {
             document.getElementById('copyLink').textContent = 'Copy';
         }, 2000);
+    });
+
+    // Mobile copy link handler
+    document.getElementById('mobileCopyLink')?.addEventListener('click', () => {
+        const input = document.getElementById('mobileProfileUrl');
+        input.select();
+        navigator.clipboard.writeText(input.value).then(() => {
+            document.getElementById('mobileCopyLink').textContent = '✓ Copied!';
+            setTimeout(() => {
+                document.getElementById('mobileCopyLink').textContent = '📋 Copy';
+            }, 2000);
+        }).catch(() => {
+            // Fallback for older browsers
+            document.execCommand('copy');
+            document.getElementById('mobileCopyLink').textContent = '✓ Copied!';
+            setTimeout(() => {
+                document.getElementById('mobileCopyLink').textContent = '📋 Copy';
+            }, 2000);
+        });
     });
 }
 
@@ -290,8 +317,15 @@ function setupForms() {
 
             // Update profile URL display
             const baseUrl = window.location.origin + window.location.pathname.replace('dashboard.html', '');
-            document.getElementById('profileUrl').value = baseUrl + 'u/' + newUsername;
+            const newProfileLink = baseUrl + 'u/' + newUsername;
+            document.getElementById('profileUrl').value = newProfileLink;
             document.getElementById('viewProfile').href = 'u/' + newUsername;
+
+            // Update mobile profile link
+            const mobileProfileUrl = document.getElementById('mobileProfileUrl');
+            const mobileViewProfile = document.getElementById('mobileViewProfile');
+            if (mobileProfileUrl) mobileProfileUrl.value = newProfileLink;
+            if (mobileViewProfile) mobileViewProfile.href = 'u/' + newUsername;
 
             statusEl.innerHTML = '<span style="color: #86efac;">✓ Username changed successfully!</span>';
             btn.textContent = 'Changed!';
