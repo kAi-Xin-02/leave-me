@@ -254,7 +254,7 @@ button[type="submit"]:hover {
     color: #86efac;
 }
 
-/* Responsive */
+/* Responsive - Tablet */
 @media (max-width: 768px) {
     .start-title {
         font-size: 3rem;
@@ -270,6 +270,121 @@ button[type="submit"]:hover {
 
     .auth-container {
         padding: 1.5rem;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+    .landing-container {
+        padding: 1rem;
+        align-items: flex-start;
+        padding-top: 3rem;
+    }
+
+    .start-title {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .start-text {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .start-hint {
+        font-size: 0.8rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    .auth-container {
+        padding: 1.25rem;
+        border-radius: 14px;
+    }
+
+    .tab-buttons {
+        margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+        padding: 0.65rem;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+
+    form {
+        gap: 0.875rem;
+    }
+
+    input {
+        padding: 0.8rem;
+        font-size: 16px;
+        /* Prevent iOS zoom */
+        border-radius: 8px;
+    }
+
+    button[type="submit"] {
+        padding: 0.8rem;
+        font-size: 0.95rem;
+        min-height: 48px;
+    }
+
+    .divider {
+        margin: 1.25rem 0;
+    }
+
+    .divider span {
+        font-size: 0.8rem;
+    }
+
+    .social-auth {
+        gap: 0.6rem;
+    }
+
+    .auth-btn {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        min-height: 48px;
+    }
+
+    .auth-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .status-message {
+        font-size: 0.85rem;
+        padding: 0.65rem;
+    }
+
+    .password-toggle {
+        padding: 8px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .confirmation-message {
+        padding: 1.25rem;
+    }
+
+    .confirmation-message h3 {
+        font-size: 1rem;
+    }
+
+    .confirmation-message p {
+        font-size: 0.85rem;
+    }
+
+    .confirmation-message .email-icon {
+        font-size: 2rem;
     }
 }
 

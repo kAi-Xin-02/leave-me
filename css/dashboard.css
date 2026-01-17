@@ -556,7 +556,7 @@
     color: #ffffff;
 }
 
-/* Responsive */
+/* Responsive - Tablet */
 @media (max-width: 1100px) {
     .dashboard {
         grid-template-columns: 1fr;
@@ -568,6 +568,16 @@
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         padding: 1rem;
+        gap: 0.5rem;
+    }
+
+    .sidebar::after {
+        display: none;
+    }
+
+    .nav-item {
+        white-space: nowrap;
+        padding: 0.75rem 1rem;
     }
 
     .preview-panel {
@@ -576,5 +586,208 @@
 
     .content {
         padding: 2rem;
+    }
+}
+
+/* Responsive - Small Tablet */
+@media (max-width: 768px) {
+    .topbar {
+        padding: 0.875rem 1rem;
+    }
+
+    .logo {
+        font-size: 1.1rem;
+    }
+
+    .nav-right {
+        gap: 1rem;
+    }
+
+    .nav-link {
+        display: none;
+    }
+
+    .logout-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .sidebar {
+        padding: 0.75rem;
+        gap: 0.4rem;
+    }
+
+    .nav-item {
+        padding: 0.65rem 0.9rem;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+
+    .content {
+        padding: 1.5rem;
+    }
+
+    .section h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-row label {
+        font-size: 0.8rem;
+    }
+
+    .form-row input,
+    .form-row textarea {
+        padding: 0.8rem 1rem;
+        font-size: 16px;
+        /* Prevent iOS zoom */
+    }
+
+    .save-btn {
+        width: 100%;
+        padding: 0.85rem 2rem;
+    }
+
+    .add-link {
+        flex-direction: column;
+    }
+
+    .add-link select,
+    .add-link input,
+    .add-link button {
+        width: 100%;
+    }
+
+    .link-item {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .message-item {
+        padding: 1rem;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+    .topbar {
+        padding: 0.75rem;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .logout-btn {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .sidebar {
+        padding: 0.5rem;
+        gap: 0.3rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-item {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+
+    .badge {
+        font-size: 0.6rem;
+        padding: 0.1rem 0.4rem;
+    }
+
+    .content {
+        padding: 1rem;
+    }
+
+    .section {
+        max-width: 100%;
+    }
+
+    .section h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .form-row {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-row label {
+        font-size: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-row input,
+    .form-row textarea {
+        padding: 0.75rem;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+
+    .file-upload {
+        padding: 1.5rem 1rem;
+    }
+
+    .file-upload img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .file-upload span {
+        font-size: 0.85rem;
+    }
+
+    .save-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        min-height: 48px;
+    }
+
+    .add-link select,
+    .add-link input {
+        padding: 0.65rem 0.9rem;
+        font-size: 16px;
+    }
+
+    .add-link button {
+        padding: 0.65rem 1rem;
+        min-height: 44px;
+    }
+
+    .link-item {
+        padding: 0.7rem 1rem;
+    }
+
+    .link-item span {
+        font-size: 0.85rem;
+    }
+
+    .message-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .message-from {
+        font-size: 0.9rem;
+    }
+
+    .message-text {
+        font-size: 0.9rem;
+    }
+
+    .dashboard-footer {
+        padding: 1rem;
+    }
+
+    .dashboard-footer p {
+        font-size: 0.75rem;
     }
 }

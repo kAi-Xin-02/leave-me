@@ -1,0 +1,89 @@
+/* Global Mobile Fixes - Include on all pages */
+/* Prevents tap highlight and button zoom issues on mobile */
+
+/* Universal tap highlight removal */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+/* Ensure proper text sizing on mobile */
+html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* Touch action for all interactive elements */
+a,
+button,
+input,
+select,
+textarea,
+[role="button"],
+.btn,
+.nav-item,
+.tab-btn,
+.social-link,
+.link-item,
+.message-btn,
+.auth-btn,
+.logout-btn,
+.save-btn,
+.add-link button,
+.profile-link button {
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Prevent iOS zoom on focus */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="number"],
+input[type="tel"],
+textarea,
+select {
+    font-size: 16px !important;
+    /* Prevents iOS zoom on focus */
+}
+
+/* Active states for better mobile feedback */
+button:active,
+.btn:active,
+a:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+}
+
+/* Minimum touch target sizes */
+@media (max-width: 768px) {
+
+    button,
+    .btn,
+    a.btn,
+    .nav-item,
+    .tab-btn,
+    .auth-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Smooth scrolling */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}

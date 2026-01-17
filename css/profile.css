@@ -450,21 +450,141 @@
 }
 
 @media (max-width: 480px) {
+    .profile-container {
+        padding: 1rem;
+        align-items: flex-start;
+        padding-top: 2rem;
+    }
+
     .profile-card {
         padding: 2rem 1.5rem;
         border-radius: 20px;
     }
 
+    .views-counter {
+        top: 0.75rem;
+        right: 0.75rem;
+        font-size: 0.7rem;
+    }
+
     .avatar {
         width: 70px;
         height: 70px;
+        margin-bottom: 1rem;
     }
 
     .name {
         font-size: 1.35rem;
     }
 
+    .bio {
+        font-size: 0.8rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .social-links {
+        gap: 0.4rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .social-link {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .social-link svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .message-btn {
+        padding: 0.7rem 1.75rem;
+        font-size: 0.85rem;
+        min-height: 44px;
+        width: 100%;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        border-radius: 16px;
+        width: 92%;
+    }
+
+    .close-btn {
+        width: 36px;
+        height: 36px;
+        min-width: 44px;
+        min-height: 44px;
+        top: 0.75rem;
+        right: 0.75rem;
+    }
+
+    .modal h2 {
+        font-size: 1.05rem;
+        margin-bottom: 1rem;
+        padding-right: 2rem;
+    }
+
+    .modal form {
+        gap: 0.7rem;
+    }
+
+    .modal input,
+    .modal textarea {
+        padding: 0.7rem 0.9rem;
+        font-size: 16px;
+        /* Prevent iOS zoom */
+        border-radius: 8px;
+    }
+
+    .modal button[type="submit"] {
+        padding: 0.7rem;
+        min-height: 44px;
+    }
+
+    .sender-info {
+        padding: 0.6rem;
+    }
+
+    .sender-info img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .sender-info span {
+        font-size: 0.85rem;
+    }
+
+    .auth-buttons {
+        gap: 0.5rem;
+    }
+
+    .auth-btn {
+        padding: 0.7rem;
+        min-height: 44px;
+        font-size: 0.85rem;
+    }
+
     .cursor-glow {
         display: none;
     }
+}
+
+/* Touch handling for interactive elements */
+.social-link,
+.message-btn,
+.auth-btn,
+.close-btn,
+.modal button[type="submit"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.social-link:active,
+.message-btn:active,
+.auth-btn:active {
+    transform: scale(0.96);
+    opacity: 0.9;
 }
