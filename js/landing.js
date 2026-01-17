@@ -6,6 +6,21 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAuthState();
 });
 
+function togglePassword(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const eyeOpen = btn.querySelector('.eye-open');
+    const eyeClosed = btn.querySelector('.eye-closed');
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeOpen.style.display = 'none';
+        eyeClosed.style.display = 'block';
+    } else {
+        input.type = 'password';
+        eyeOpen.style.display = 'block';
+        eyeClosed.style.display = 'none';
+    }
+}
+
 function createParticles() {
     const container = document.getElementById('particles');
     if (!container) return;
@@ -49,18 +64,27 @@ function setupForms() {
 
 async function handleLogin(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('button');
+    const btn = e.target.querySelector('button[type="submit"]');
     const statusEl = document.getElementById('statusMessage');
     btn.disabled = true;
     btn.textContent = 'Logging in...';
-    if (statusEl) statusEl.textContent = '';
+    if (statusEl) { statusEl.textContent = ''; statusEl.style.display = 'none'; }
     try {
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
         await signInWithEmail(email, password);
         window.location.href = 'dashboard.html';
     } catch (err) {
-        if (statusEl) statusEl.textContent = err.message;
+        if (statusEl) {
+            if (err.message.includes('Email not confirmed')) {
+                statusEl.innerHTML = '📧 Please check your email and click the confirmation link before logging in.';
+                statusEl.style.color = '#fbbf24';
+            } else {
+                statusEl.textContent = err.message;
+                statusEl.style.color = '#ff6b6b';
+            }
+            statusEl.style.display = 'block';
+        }
     } finally {
         btn.disabled = false;
         btn.textContent = 'Login';
@@ -69,11 +93,11 @@ async function handleLogin(e) {
 
 async function handleSignup(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('button');
+    const btn = e.target.querySelector('button[type="submit"]');
     const statusEl = document.getElementById('statusMessage');
     btn.disabled = true;
     btn.textContent = 'Creating account...';
-    if (statusEl) statusEl.textContent = '';
+    if (statusEl) { statusEl.textContent = ''; statusEl.style.display = 'none'; }
     try {
         const username = document.getElementById('signupUsername').value.toLowerCase();
         const email = document.getElementById('signupEmail').value;
@@ -82,10 +106,18 @@ async function handleSignup(e) {
             throw new Error('Username can only contain lowercase letters, numbers, and underscores');
         }
         await signUpWithEmail(email, password, username);
-        if (statusEl) { statusEl.textContent = 'Account created! Redirecting...'; statusEl.style.color = '#22c55e'; }
-        window.location.href = 'dashboard.html';
+        if (statusEl) {
+            statusEl.innerHTML = `
+                <div class="confirmation-message">
+                    <div class="email-icon">📧</div>
+                    <h3>Check your email!</h3>
+                    <p>We've sent a confirmation link to <strong>${email}</strong>.<br>Click the link to activate your account.</p>
+                </div>
+            `;
+            statusEl.style.display = 'block';
+        }
     } catch (err) {
-        if (statusEl) { statusEl.textContent = err.message; statusEl.style.color = '#ff6b6b'; }
+        if (statusEl) { statusEl.textContent = err.message; statusEl.style.color = '#ff6b6b'; statusEl.style.display = 'block'; }
     } finally {
         btn.disabled = false;
         btn.textContent = 'Create Account';
@@ -118,3 +150,4 @@ function checkAuthState() {
         auth.onAuthStateChanged(user => { if (user) window.location.href = 'dashboard.html'; });
     }
 }
+
