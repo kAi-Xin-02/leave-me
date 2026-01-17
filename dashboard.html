@@ -36,14 +36,16 @@
                 <h2>Edit Profile</h2>
                 <form id="profileForm">
                     <div class="form-row">
-                        <label>Username <span style="color: rgba(255,255,255,0.4); font-size: 0.75rem;">(your unique
-                                URL)</span></label>
-                        <div style="display: flex; gap: 0.5rem; align-items: center;">
-                            <span style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">leave.me/u/</span>
-                            <input type="text" id="username" maxlength="20" style="flex: 1;" pattern="[a-z0-9_]+"
-                                title="Lowercase letters, numbers, and underscores only">
+                        <label>Username</label>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                            <span
+                                style="color: rgba(255,255,255,0.5); font-size: 0.85rem; white-space: nowrap;">leave.me/u/</span>
+                            <input type="text" id="username" minlength="3" maxlength="22"
+                                style="flex: 1; min-width: 120px; font-size: 1rem; padding: 0.75rem; text-overflow: ellipsis;"
+                                pattern="[a-z0-9_]+"
+                                title="Lowercase letters, numbers, and underscores only (3-22 chars)">
                             <button type="button" id="changeUsernameBtn" class="save-btn"
-                                style="margin: 0; padding: 0.6rem 1rem; font-size: 0.85rem;">Change</button>
+                                style="margin: 0; padding: 0.6rem 1.2rem; font-size: 0.85rem; white-space: nowrap;">Change</button>
                         </div>
                         <div id="usernameStatus" style="font-size: 0.8rem; margin-top: 0.5rem;"></div>
                     </div>

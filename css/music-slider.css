@@ -5,9 +5,10 @@
     pointer-events: all;
     width: 20px;
     height: 20px;
-    background: white;
+    background: linear-gradient(135deg, #ffffff, #e0e0e0);
+    border: 2px solid #333;
     border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
     cursor: grab;
 }
 
@@ -21,16 +22,24 @@
     pointer-events: all;
     width: 20px;
     height: 20px;
-    background: white;
+    background: linear-gradient(135deg, #ffffff, #e0e0e0);
+    border: 2px solid #333;
     border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
     cursor: grab;
-    border: none;
 }
 
 #startSlider,
 #endSlider {
     pointer-events: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+}
+
+#startSlider::-webkit-slider-runnable-track,
+#endSlider::-webkit-slider-runnable-track {
+    background: transparent;
 }
 
 #startSlider::-webkit-slider-thumb {

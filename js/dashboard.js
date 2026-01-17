@@ -251,6 +251,11 @@ function setupForms() {
             return;
         }
 
+        if (newUsername.length > 22) {
+            statusEl.innerHTML = '<span style="color: #f87171;">❌ Username must be 22 characters or less</span>';
+            return;
+        }
+
         if (newUsername === userProfile.username) {
             statusEl.innerHTML = '<span style="color: #fbbf24;">⚠️ This is already your username</span>';
             return;
