@@ -687,15 +687,20 @@
         padding: 0.5rem;
         gap: 0.3rem;
         -webkit-overflow-scrolling: touch;
-        display: flex;
-        flex-wrap: nowrap;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
     }
 
     .nav-item {
-        flex: 1 1 0;
-        min-width: 70px;
-        padding: 0.6rem 0.5rem;
-        font-size: 0.75rem;
+        flex: 1 1 0 !important;
+        flex-grow: 1 !important;
+        flex-shrink: 1 !important;
+        flex-basis: 0 !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        padding: 0.6rem 0.4rem;
+        font-size: 0.72rem;
         min-height: 40px;
         display: flex;
         align-items: center;
