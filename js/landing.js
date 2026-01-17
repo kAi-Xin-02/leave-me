@@ -10,16 +10,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function handleAuthCallback() {
     const hash = window.location.hash;
-    if (hash && hash.includes('access_token')) {
+    if (!hash) return;
+
+    const params = new URLSearchParams(hash.substring(1));
+
+    if (params.get('error')) {
+        const errorDesc = params.get('error_description') || 'Link expired or invalid';
+        const startScreen = document.getElementById('startScreen');
+        if (startScreen) startScreen.style.display = 'none';
         const statusEl = document.getElementById('statusMessage');
         if (statusEl) {
-            statusEl.innerHTML = '<div style="color: #86efac;">✅ Email confirmed! Logging you in...</div>';
+            statusEl.innerHTML = `<div style="color: #fbbf24; padding: 15px; background: rgba(251,191,36,0.1); border-radius: 10px; border: 1px solid rgba(251,191,36,0.3);">
+                ⚠️ ${errorDesc.replace(/\+/g, ' ')}<br><br>
+                <small style="color: rgba(255,255,255,0.6);">Please request a new confirmation email or try logging in again.</small>
+            </div>`;
             statusEl.style.display = 'block';
         }
-        const params = new URLSearchParams(hash.substring(1));
+        window.history.replaceState({}, document.title, window.location.pathname);
+        return;
+    }
+
+    if (hash.includes('access_token')) {
+        const startScreen = document.getElementById('startScreen');
+        if (startScreen) startScreen.style.display = 'none';
+
+        const statusEl = document.getElementById('statusMessage');
+        if (statusEl) {
+            statusEl.innerHTML = '<div style="color: #86efac; padding: 15px; background: rgba(134,239,172,0.1); border-radius: 10px; border: 1px solid rgba(134,239,172,0.3);">✅ Email confirmed! Logging you in...</div>';
+            statusEl.style.display = 'block';
+        }
+
         const accessToken = params.get('access_token');
         const refreshToken = params.get('refresh_token');
-        if (accessToken && refreshToken) {
+
+        if (accessToken && refreshToken && typeof sb !== 'undefined') {
             try {
                 const { data, error } = await sb.auth.setSession({
                     access_token: accessToken,
@@ -29,11 +53,22 @@ async function handleAuthCallback() {
                     localStorage.setItem('auth_confirmed', Date.now().toString());
                     window.location.href = 'dashboard.html';
                     return;
+                } else if (error) {
+                    if (statusEl) {
+                        statusEl.innerHTML = `<div style="color: #fbbf24; padding: 15px; background: rgba(251,191,36,0.1); border-radius: 10px; border: 1px solid rgba(251,191,36,0.3);">
+                            ⚠️ ${error.message}<br><br>
+                            <small style="color: rgba(255,255,255,0.6);">Please try logging in with your email and password.</small>
+                        </div>`;
+                    }
                 }
             } catch (e) {
                 console.log('Auth callback error:', e);
+                if (statusEl) {
+                    statusEl.innerHTML = '<div style="color: #ff6b6b;">❌ Login failed. Please try again.</div>';
+                }
             }
         }
+        window.history.replaceState({}, document.title, window.location.pathname);
     }
 }
 
