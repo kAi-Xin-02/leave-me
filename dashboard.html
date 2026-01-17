@@ -28,12 +28,25 @@
             <button class="nav-item" data-section="links">Links</button>
             <button class="nav-item" data-section="messages">Messages <span class="badge" id="msgBadge"></span></button>
             <button class="nav-item" data-section="theme">Theme</button>
+            <button class="nav-item" data-section="help">Help</button>
         </aside>
 
         <div class="content">
             <section id="profileSection" class="section">
                 <h2>Edit Profile</h2>
                 <form id="profileForm">
+                    <div class="form-row">
+                        <label>Username <span style="color: rgba(255,255,255,0.4); font-size: 0.75rem;">(your unique
+                                URL)</span></label>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <span style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">leave.me/u/</span>
+                            <input type="text" id="username" maxlength="20" style="flex: 1;" pattern="[a-z0-9_]+"
+                                title="Lowercase letters, numbers, and underscores only">
+                            <button type="button" id="changeUsernameBtn" class="save-btn"
+                                style="margin: 0; padding: 0.6rem 1rem; font-size: 0.85rem;">Change</button>
+                        </div>
+                        <div id="usernameStatus" style="font-size: 0.8rem; margin-top: 0.5rem;"></div>
+                    </div>
                     <div class="form-row">
                         <label>Display Name</label>
                         <input type="text" id="displayName" maxlength="30">
@@ -152,6 +165,72 @@
                     <input type="range" id="opacitySlider" min="0" max="100" value="70">
                 </div>
                 <button id="saveTheme" class="save-btn">Save Theme</button>
+            </section>
+
+            <section id="helpSection" class="section hidden">
+                <h2>How to Use leave.me</h2>
+
+                <div class="help-card"
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                    <h3 style="color: #86efac; font-size: 1.1rem; margin-bottom: 0.75rem;">📝 Profile Setup</h3>
+                    <ul
+                        style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.8; padding-left: 1.2rem;">
+                        <li><strong>Username:</strong> Your unique URL (leave.me/u/yourname). Can be changed anytime.
+                        </li>
+                        <li><strong>Display Name:</strong> The name shown on your profile (can be different from
+                            username).</li>
+                        <li><strong>Bio:</strong> A short description about yourself (max 150 characters).</li>
+                        <li><strong>Avatar:</strong> Your profile picture. Click to upload and crop.</li>
+                        <li><strong>Background:</strong> Image or video that appears behind your profile card.</li>
+                        <li><strong>Music:</strong> Optional background music that plays when visitors view your
+                            profile.</li>
+                    </ul>
+                </div>
+
+                <div class="help-card"
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                    <h3 style="color: #60a5fa; font-size: 1.1rem; margin-bottom: 0.75rem;">🔗 Social Links</h3>
+                    <ul
+                        style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.8; padding-left: 1.2rem;">
+                        <li>Add links to your social media profiles (GitHub, Discord, Instagram, etc.)</li>
+                        <li>Select the platform from dropdown, paste your URL, and click "Add"</li>
+                        <li>Click the × button to remove a link</li>
+                        <li>Links appear as icons on your profile card</li>
+                    </ul>
+                </div>
+
+                <div class="help-card"
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                    <h3 style="color: #f472b6; font-size: 1.1rem; margin-bottom: 0.75rem;">💬 Messages</h3>
+                    <ul
+                        style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.8; padding-left: 1.2rem;">
+                        <li>Visitors can leave anonymous messages on your profile</li>
+                        <li>New messages appear with a notification badge</li>
+                        <li>Click a message to mark it as read</li>
+                        <li>Click "Delete" to remove a message</li>
+                    </ul>
+                </div>
+
+                <div class="help-card"
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                    <h3 style="color: #fbbf24; font-size: 1.1rem; margin-bottom: 0.75rem;">🎨 Theme</h3>
+                    <ul
+                        style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.8; padding-left: 1.2rem;">
+                        <li><strong>Accent Color:</strong> Customize your profile's accent color</li>
+                        <li><strong>Background Blur:</strong> Adjust the blur effect on your background</li>
+                        <li><strong>Card Opacity:</strong> Control the transparency of your profile card</li>
+                    </ul>
+                </div>
+
+                <div class="help-card"
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem;">
+                    <h3 style="color: #c084fc; font-size: 1.1rem; margin-bottom: 0.75rem;">📤 Share Your Profile</h3>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6;">
+                        Copy your profile link from the preview panel on the right (or use "View Profile" in the top
+                        menu) and share it anywhere! Your link looks like: <strong
+                            style="color: #fff;">leave.me/u/yourname</strong>
+                    </p>
+                </div>
             </section>
         </div>
 

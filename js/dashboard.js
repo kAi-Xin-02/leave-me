@@ -53,6 +53,7 @@ async function loadProfile() {
     userProfile = await getUserProfile(currentUser.uid);
     if (!userProfile) return;
 
+    document.getElementById('username').value = userProfile.username || '';
     document.getElementById('displayName').value = userProfile.displayName || '';
     document.getElementById('bio').value = userProfile.bio || '';
 
@@ -231,6 +232,75 @@ function setupForms() {
         userProfile.socialLinks = links;
         renderLinks();
         document.getElementById('linkUrl').value = '';
+    });
+
+    // Username change handler
+    document.getElementById('changeUsernameBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('changeUsernameBtn');
+        const statusEl = document.getElementById('usernameStatus');
+        const newUsername = document.getElementById('username').value.toLowerCase().trim();
+
+        // Validate username format
+        if (!/^[a-z0-9_]+$/.test(newUsername)) {
+            statusEl.innerHTML = '<span style="color: #f87171;">❌ Only lowercase letters, numbers, and underscores allowed</span>';
+            return;
+        }
+
+        if (newUsername.length < 3) {
+            statusEl.innerHTML = '<span style="color: #f87171;">❌ Username must be at least 3 characters</span>';
+            return;
+        }
+
+        if (newUsername === userProfile.username) {
+            statusEl.innerHTML = '<span style="color: #fbbf24;">⚠️ This is already your username</span>';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Checking...';
+        statusEl.innerHTML = '';
+
+        try {
+            // Check if username is already taken
+            const { data: existingUser } = await window.supabaseClient
+                .from('profiles')
+                .select('username')
+                .eq('username', newUsername)
+                .single();
+
+            if (existingUser) {
+                statusEl.innerHTML = '<span style="color: #f87171;">❌ Username already taken</span>';
+                btn.textContent = 'Change';
+                btn.disabled = false;
+                return;
+            }
+
+            // Update username
+            await window.supabaseClient
+                .from('profiles')
+                .update({ username: newUsername })
+                .eq('id', currentUser.uid);
+
+            userProfile.username = newUsername;
+
+            // Update profile URL display
+            const baseUrl = window.location.origin + window.location.pathname.replace('dashboard.html', '');
+            document.getElementById('profileUrl').value = baseUrl + 'u/' + newUsername;
+            document.getElementById('viewProfile').href = 'u/' + newUsername;
+
+            statusEl.innerHTML = '<span style="color: #86efac;">✓ Username changed successfully!</span>';
+            btn.textContent = 'Changed!';
+
+            setTimeout(() => {
+                btn.textContent = 'Change';
+                statusEl.innerHTML = '';
+            }, 3000);
+        } catch (err) {
+            statusEl.innerHTML = '<span style="color: #f87171;">❌ Error: ' + err.message + '</span>';
+            btn.textContent = 'Change';
+        } finally {
+            btn.disabled = false;
+        }
     });
 }
 
